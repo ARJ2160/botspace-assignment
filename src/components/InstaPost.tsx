@@ -24,9 +24,8 @@ const InstaPost = ({ imageUrl, username, description }: InstaPostProps) => {
   return (
     <Card sx={{ maxWidth: 400, bgcolor: '#000', color: '#fff', borderRadius: 0 }}>
       <Box className='flex justify-between items-center flex-col'>
-        <div></div>
-        <div> <div className='text-gray-500 font-bold'>BOTSPACEHQ</div>
-          <div className='text-xl font-bold'>Posts</div></div>
+        <div className='text-gray-500 font-bold'>BOTSPACEHQ</div>
+        <div className='text-xl font-bold'>Posts</div>
       </Box>
       <CardHeader
         avatar={<Avatar src={`https://i.pravatar.cc/150?u=${username}`} />}

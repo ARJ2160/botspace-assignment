@@ -1,20 +1,22 @@
-import { useState } from 'react'
+import { useState, lazy } from 'react'
 
 import { Box, Button, Chip, FormControl, FormControlLabel, Link, Radio, RadioGroup, Switch, TextField, Typography } from '@mui/material'
 import { Info } from '@mui/icons-material'
 
-import { DMInterface, InstaPost, PostWithComments, Smartphone, FormContainer, FormHeader, NextButton, StyledToggleButton, StyledToggleButtonGroup } from './components'
+import { InstaPost, Smartphone, FormContainer, FormHeader, NextButton, StyledToggleButton, StyledToggleButtonGroup } from './components'
 import Sidebar from './Sidebar'
 import './App.css'
 import { Chips } from './components/Chips'
-
 
 const imageUrls = [
   "https://cdn.shopify.com/s/files/1/0421/6153/7180/files/cate-df-4_360x.jpg?v=1605751515",
   "https://cdn.shopify.com/s/files/1/0421/6153/7180/files/cate-df-2_360x.jpg?v=1605751489",
   "https://cdn.shopify.com/s/files/1/0421/6153/7180/files/cate-df-3_360x.jpg?v=1605751469",
-  "	https://cdn.shopify.com/s/files/1/0421/6153/7180/files/cate-df-1_360x.jpg?v=1605751503"
+  "https://cdn.shopify.com/s/files/1/0421/6153/7180/files/cate-df-1_360x.jpg?v=1605751503"
 ];
+
+const PostWithComments = lazy(() => import('./components/PostWithComments'));
+const DMInterface = lazy(() => import('./components/DMInterface'));
 
 function App() {
   const [selectedOption, setSelectedOption] = useState('specific')

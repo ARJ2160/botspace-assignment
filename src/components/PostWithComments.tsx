@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
-import InstaPost from './InstaPost'; // the component with your post image
-import CommentsDrawer from './CommentsDrawer'; // from previous message
+
+import InstaPost from './InstaPost';
+import CommentsDrawer from './CommentsDrawer';
 
 const PostWithComments = ({ imageUrl, commentInput }: { imageUrl: string, commentInput: string }) => {
 
@@ -12,7 +13,6 @@ const PostWithComments = ({ imageUrl, commentInput }: { imageUrl: string, commen
         maxWidth: 400,
       }}
     >
-      {/* Your Post */}
       <InstaPost
         imageUrl={imageUrl}
         username="botspacehq"
