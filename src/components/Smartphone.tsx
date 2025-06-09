@@ -4,7 +4,7 @@ interface ISmartphone {
   children: ReactNode;
 }
 
-export const Smartphone = ({ children }: ISmartphone) => {
+const Smartphone = ({ children }: ISmartphone) => {
   return (
     <div className="flex items-center justify-center bg-gray-100 p-5">
       <div className="rounded-[2.5rem] border-[6px] border-gray-900 bg-black shadow-2xl w-[380px] h-[750px] flex flex-col overflow-hidden relative">
@@ -19,3 +19,5 @@ export const Smartphone = ({ children }: ISmartphone) => {
     </div>
   )
 }
+
+export default Smartphone

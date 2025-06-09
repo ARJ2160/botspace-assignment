@@ -1,15 +1,11 @@
 import { useState } from 'react'
 
-import { Box, Button, Chip, Divider, FormControl, FormControlLabel, Link, Radio, RadioGroup, Switch, TextField, Typography } from '@mui/material'
+import { Box, Button, Chip, FormControl, FormControlLabel, Link, Radio, RadioGroup, Switch, TextField, Typography } from '@mui/material'
+import { Info } from '@mui/icons-material'
 
-import { Smartphone } from './components/Smartphone'
-import InstaPost from './components/InstaPost'
+import { DMInterface, InstaPost, PostWithComments, Smartphone, FormContainer, FormHeader, NextButton, StyledToggleButton, StyledToggleButtonGroup } from './components'
 import Sidebar from './Sidebar'
 import './App.css'
-import { FormContainer, FormHeader, NextButton, StyledToggleButton, StyledToggleButtonGroup } from './components/styledComponents'
-import { Info } from '@mui/icons-material'
-import PostWithComments from './components/PostWithComments'
-import DMInterface from './components/DMInterface'
 
 function App() {
   const [selectedOption, setSelectedOption] = useState('specific')
