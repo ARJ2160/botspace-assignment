@@ -2,7 +2,7 @@ import { Box, Button, ToggleButtonGroup, ToggleButton, styled, FormControl, Form
 
 
 export const StyledToggleButtonGroup = styled(ToggleButtonGroup)(() => ({
-  backgroundColor: '#e5e7eb',
+  backgroundColor: '#dde1e7',
   borderRadius: 9999,
   padding: '4px',
 }));

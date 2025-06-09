@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 
 interface IChips {
   children: ReactNode;
-  classNames: string;
+  classNames?: string;
 }
 
 export const Chips = ({ children, classNames }: IChips) => {

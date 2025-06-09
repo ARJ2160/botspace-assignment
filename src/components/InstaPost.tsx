@@ -31,7 +31,6 @@ const InstaPost = ({ imageUrl, username, description }: InstaPostProps) => {
       <CardHeader
         avatar={<Avatar src={`https://i.pravatar.cc/150?u=${username}`} />}
         title={<div className='text-left'>{username}</div>}
-        // subheader={<div className='text-white font-bold text-left'>Posts</div>}
         sx={{ py: 2 }}
       />
       <CardMedia
@@ -50,7 +49,7 @@ const InstaPost = ({ imageUrl, username, description }: InstaPostProps) => {
           <IconButton sx={{ color: '#fff' }}><BookmarkBorderIcon /></IconButton>
         </Box>
 
-        <div className='text-sm text-gray-500'>
+        <div className='text-sm text-gray-500 text-left'>
           <span className='font-bold text-white'>{username}</span> {description}
         </div>
       </CardContent>
