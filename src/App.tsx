@@ -299,15 +299,17 @@ function App() {
             {(step === 3 || step === 4) && <DMInterface openingDM={openingDM} linkText={linkDM} responseDM={responseDM} />}
           </Smartphone>
 
-          <StyledToggleButtonGroup
-            value={value}
-            exclusive
-            onChange={handleChange}
-          >
-            <StyledToggleButton value="post">Post</StyledToggleButton>
-            <StyledToggleButton value="comments">Comments</StyledToggleButton>
-            <StyledToggleButton value="dm">DM</StyledToggleButton>
-          </StyledToggleButtonGroup>
+          <Box className='flex justify-center items-center'>
+            <StyledToggleButtonGroup
+              value={value}
+              exclusive
+              onChange={handleChange}
+            >
+              <StyledToggleButton value="post">Post</StyledToggleButton>
+              <StyledToggleButton value="comments">Comments</StyledToggleButton>
+              <StyledToggleButton value="dm">DM</StyledToggleButton>
+            </StyledToggleButtonGroup>
+          </Box>
         </Box>
       </Box>
     </Box>
