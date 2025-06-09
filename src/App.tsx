@@ -1,22 +1,27 @@
 import { useState } from 'react'
 
-import { Box, Button, Chip, Divider, FormControl, FormControlLabel, Input, Link, Radio, RadioGroup, Switch, TextField, Typography, ToggleButtonGroup, ToggleButton, styled } from '@mui/material'
+import { Box, Button, Chip, Divider, FormControl, FormControlLabel, Link, Radio, RadioGroup, Switch, TextField, Typography } from '@mui/material'
 
 import { Smartphone } from './components/Smartphone'
-import InstaPost from './components/Step1'
+import InstaPost from './components/InstaPost'
 import Sidebar from './Sidebar'
 import './App.css'
+import { FormContainer, FormHeader, NextButton, StyledToggleButton, StyledToggleButtonGroup } from './components/styledComponents'
+import { Info } from '@mui/icons-material'
+import PostWithComments from './components/PostWithComments'
+import DMInterface from './components/DMInterface'
 
 function App() {
   const [selectedOption, setSelectedOption] = useState('specific')
+  const [commentInput, setCommentInput] = useState('')
   const [step, setStep] = useState(1)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [openingDMEnabled, setOpeningDMEnabled] = useState(true);
   const [openingDM, setOpeningDM] = useState(
     "Hey there! I'm so happy you're here, thanks so much for your interest 😊\n\nClick below and I'll send you the link in just a sec ✨"
   );
-  const [linkDM, setLinkDM] = useState('');
-  const [activeTab, setActiveTab] = useState(0);
+  const [linkDM, setLinkDM] = useState('Send me the link');
+  const [responseDM, setResponseDM] = useState('')
 
   const [value, setValue] = useState('post');
 
@@ -35,57 +40,30 @@ function App() {
     setSelectedImage(imageUrl);
   };
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
-  };
-
-  const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-    backgroundColor: '#e5e7eb',
-    borderRadius: 9999,
-    padding: '4px',
-  }));
-
-  const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
-    border: 0,
-    borderRadius: 9999,
-    padding: '6px 16px',
-    textTransform: 'none',
-    fontWeight: 500,
-    fontSize: '0.875rem',
-    color: '#6b7280',
-    '&.Mui-selected': {
-      backgroundColor: '#fff',
-      color: '#000',
-      boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
-    },
-    '&:hover': {
-      backgroundColor: '#f3f4f6',
-    },
-  }));
 
   return (
     <Box className='min-h-screen max-h-fit'>
       <Sidebar />
       <Box className='grid grid-cols-3 p-3 align-start ml-22'>
-        <Box className='col-span-1 max-h-screen overflow-y-auto'>
+        <Box className='col-span-1 max-h-screen overflow-y-auto space-y-5 p-2'>
 
           {step >= 1 &&
-            <Box>
-              <div className='font-bold text-3xl'>
+            <FormContainer>
+              <FormHeader>
                 When someone comments on
-              </div>
+              </FormHeader>
               <FormControl className='text-left items-start flex justify-start'>
                 <RadioGroup className='flex flex-col gap-2' value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
-                  <Box className='bg-gray-100 p-3 pr-6 rounded-md'>
-                    <FormControlLabel value='specific' control={<Radio />} label='a specific post or reel' />
+                  <Box className='bg-gray-100 p-3 rounded-md mr-4'>
+                    <FormControlLabel value='specific' control={<Radio sx={{ color: '#6b7280', '&.Mui-checked': { color: '#000' } }} />} className='mr-6' label='a specific post or reel' />
                     {selectedOption === 'specific' && (
-                      <Box className='bg-gray-100 p-3 pr-6 rounded-md flex justify-between items-center gap-2'>
+                      <Box className='bg-gray-100 p-3 pl-0 rounded-md flex justify-start items-center gap-5'>
                         {imageUrls.map((imageUrl, index) => (
                           <img
                             key={index}
                             src={imageUrl}
                             alt={`Post option ${index + 1}`}
-                            className={`w-1/4 h-auto rounded-md cursor-pointer transition-all duration-300 hover:border-2 hover:border-blue-300 ${selectedImage === imageUrl
+                            className={`w-1/6 h-auto rounded-md cursor-pointer transition-all duration-300 hover:border-2 hover:border-blue-300 ${selectedImage === imageUrl
                               ? 'border-2 border-blue-500 shadow-lg'
                               : 'border-2 border-transparent'
                               }`}
@@ -95,121 +73,171 @@ function App() {
                       </Box>
                     )}
                   </Box>
-                  <FormControlLabel value='any' control={<Radio />} label='any post or reel' className='bg-gray-100 p-3 pr-6 rounded-md' disabled />
-                  <FormControlLabel value='next' control={<Radio />} label='next post or reel' className='bg-gray-100 p-3 pr-6 rounded-md' disabled />
+                  <FormControlLabel value='any' control={<Radio sx={{ color: '#6b7280', '&.Mui-checked': { color: '#000' } }} />} label='any post or reel' className='bg-gray-100 p-3 pr-6 rounded-md' disabled />
+                  <FormControlLabel value='next' control={<Radio sx={{ color: '#6b7280', '&.Mui-checked': { color: '#000' } }} />} label='next post or reel' className='bg-gray-100 p-3 pr-6 rounded-md' disabled />
                 </RadioGroup>
               </FormControl>
-              {step === 1 && <Button onClick={() => {
-                setStep(2)
-                setValue('comments')
-              }}>
-                Next
-              </Button>}
-            </Box>
+              {step === 1 && (
+                <NextButton onClick={() => {
+                  setStep(2)
+                  setValue('comments')
+                }}>
+                  Next
+                </NextButton>
+              )}
+            </FormContainer>
           }
 
           {step >= 2 &&
-            <Box className='flex flex-col gap-2 justify-between items-start'>
-              <div className='font-bold text-3xl'>
+            <FormContainer>
+              <FormHeader>
                 And this comment has
-              </div>
-              <FormControl className='flex justify-start items-start w-full'>
-                <Box className='bg-gray-100 p-3 pr-6 rounded-md w-full '>
-                  <FormControlLabel value='specific' control={<Radio />} className='bg-gray-100 p-3 pr-6 rounded-md' label='a specific word or words' />
-                  {selectedOption === 'specific' && (
-                    <Box className='flex flex-col justify-start items-center gap-4'>
-                      <Input type='text' placeholder='Enter a word or multiple words' />
-                      <p className='text-sm text-gray-500'>Use commas to separate words</p>
-                      <div>
-                        <p className='mb-3'>For example:</p>
-                        <div className='flex justify-start items-center gap-2'>
-                          <Chip label='Price' />
-                          <Chip label='Link' />
-                          <Chip label='Shop' />
-                        </div>
+              </FormHeader>
+              <FormControl className='flex justify-start items-start text-left w-full'>
+                <Box className='bg-gray-100 p-3 pr-6 rounded-md w-full'>
+                  <FormControlLabel value='specific' checked control={<Radio sx={{ color: '#6b7280', '&.Mui-checked': { color: '#000' } }} />} className='bg-gray-100 p-3 pr-6 pl-0 rounded-md mx-0 items-start' label='a specific word or words' />
+                  <Box className='flex flex-col gap-2'>
+                    <TextField
+                      type='text'
+                      value={commentInput}
+                      onChange={(e) => setCommentInput(e.target.value)}
+                      placeholder='Enter a word or multiple words'
+                      variant="outlined"
+                      fullWidth
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          backgroundColor: '#f8f9fa',
+                          borderRadius: '8px',
+                          '& fieldset': {
+                            border: 'none',
+                          },
+                          '&:hover fieldset': {
+                            border: 'none',
+                          },
+                          '&.Mui-focused fieldset': {
+                            border: '1px solid #d1d5db',
+                          },
+                        },
+                        '& .MuiInputBase-input': {
+                          padding: '12px 16px',
+                          fontSize: '14px',
+                          '&::placeholder': {
+                            color: '#9ca3af',
+                            opacity: 1,
+                          },
+                        },
+                      }}
+                    />
+                    <p className='text-sm text-gray-500'>Use commas to separate words</p>
+                    <div>
+                      <p className='mb-3'>For example:</p>
+                      <div className='flex justify-start items-center gap-2'>
+                        <Chip sx={{
+                          background: '#edf6ff',
+                          border: '1px solid #a1cbf3',
+                        }}
+                          onClick={() => setCommentInput("Price")}
+                          label='Price' />
+                        <Chip
+                          sx={{
+                            background: '#edf6ff',
+                            border: '1px solid #a1cbf3',
+                          }}
+                          onClick={() => setCommentInput("Link")}
+                          label='Link' />
+                        <Chip
+                          sx={{
+                            background: '#edf6ff',
+                            border: '1px solid #a1cbf3',
+                          }}
+                          onClick={() => setCommentInput("Shop")}
+                          label='Shop' />
                       </div>
-                    </Box>
-                  )}
-                  <FormControlLabel value='specific' control={<Radio />} className='bg-gray-100 p-3 pr-6 rounded-md' label='any word' disabled />
+                    </div>
+                  </Box>
+                  <FormControlLabel value='specific' control={<Radio sx={{ color: '#6b7280', '&.Mui-checked': { color: '#000' } }} />} className='bg-gray-100 p-3 pr-6 rounded-md' label='any word' disabled />
                 </Box>
               </FormControl>
-              {step === 2 && <Button onClick={() => setStep(3)}>
+              {step === 2 && <NextButton disabled={!commentInput} onClick={() => {
+                setStep(3)
+                setValue('dm')
+              }}>
                 Next
-              </Button>}
-            </Box>
+              </NextButton>}
+            </FormContainer>
           }
 
-          {step >= 3 && <Box>
-            <div className='font-bold text-3xl'>
-              They will get
-            </div>
-            <Box
-              sx={{
-                maxWidth: 400,
-                borderRadius: 2,
-                p: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'start',
-                gap: 2,
-                bgcolor: '#f3f4f6'
-              }}
-            >
-              {/* Opening DM Section */}
-              <Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Typography fontWeight="bold">an opening DM</Typography>
-                  <Switch checked={openingDMEnabled} onChange={(e) => setOpeningDMEnabled(e.target.checked)} />
+          {step >= 3 &&
+            <FormContainer>
+              <FormHeader>
+                They will get
+              </FormHeader>
+              <Box
+                sx={{
+                  width: '100%',
+                  borderRadius: 2,
+                  padding: '1rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'start',
+                  gap: 2,
+                }}
+              >
+                <Box className='bg-gray-100 p-3 pr-6 rounded-md'>
+                  <Box className='flex justify-between items-center'>
+                    <Typography fontWeight="bold">an opening DM</Typography>
+                    <Switch checked={openingDMEnabled} onChange={(e) => setOpeningDMEnabled(e.target.checked)} />
+                  </Box>
+
+                  <TextField
+                    multiline
+                    fullWidth
+                    minRows={4}
+                    value={openingDM}
+                    onChange={(e) => setOpeningDM(e.target.value)}
+                  />
+
+                  <TextField
+                    fullWidth
+                    value={linkDM}
+                    placeholder="Send me the link"
+                    sx={{ mt: 1 }}
+                    onChange={(e) => setLinkDM(e.target.value)}
+                  />
+
+                  <Link
+                    href="#"
+                    underline="hover"
+                    sx={{ fontSize: '0.9rem', mt: 1, display: 'inline-block', cursor: 'pointer', alignItems: 'start' }}
+                  >
+                    <Info /> Why does an opening DM matter?
+                  </Link>
                 </Box>
 
-                <TextField
-                  multiline
-                  fullWidth
-                  minRows={4}
-                  value={openingDM}
-                  onChange={(e) => setOpeningDM(e.target.value)}
-                />
-
-                <TextField
-                  fullWidth
-                  placeholder="Send me the link"
-                  sx={{ mt: 1 }}
-                />
-
-                <Link
-                  href="#"
-                  underline="hover"
-                  sx={{ fontSize: '0.9rem', mt: 1, display: 'inline-block' }}
-                >
-                  Why does an opening DM matter?
-                </Link>
+                {/* DM with Link Section */}
+                <Box className='bg-gray-100 p-3 pr-6 rounded-md'>
+                  <Typography fontWeight="bold" mb={1} align='left'>a DM with the link</Typography>
+                  <TextField
+                    fullWidth
+                    multiline
+                    placeholder="Write a message"
+                    value={responseDM}
+                    onChange={(e) => setResponseDM(e.target.value)}
+                  />
+                  <Button variant="outlined" sx={{ mt: 1 }}>+ Add A Link</Button>
+                </Box>
               </Box>
-
-              <Divider />
-
-              {/* DM with Link Section */}
-              <Box>
-                <Typography fontWeight="bold" mb={1}>a DM with the link</Typography>
-                <TextField
-                  fullWidth
-                  placeholder="Write a message"
-                  value={linkDM}
-                  onChange={(e) => setLinkDM(e.target.value)}
-                />
-                <Button variant="outlined" sx={{ mt: 1 }}>+ Add A Link</Button>
-              </Box>
-            </Box>
-            {step === 3 && <Button onClick={() => setStep(4)}>
-              Next
-            </Button>}
-          </Box>}
+              {step === 3 && <NextButton onClick={() => setStep(4)}>
+                Next
+              </NextButton>}
+            </FormContainer>}
 
           {step >= 4 &&
-            <Box>
-              <div className='font-bold text-3xl'>
+            <FormContainer>
+              <FormHeader>
                 Other things to automate
-              </div>
-              <FormControl className='flex flex-col gap-2'>
+              </FormHeader>
+              <FormControl className='flex flex-col gap-2 w-[100%]'>
                 <Box className='flex justify-between items-center bg-gray-200 p-3 pr-6 rounded-md'>
                   <div>Reply under the post so people feel seen and special</div>
                   <Switch />
@@ -225,8 +253,9 @@ function App() {
                   <Switch disabled />
                 </Box>
               </FormControl>
-            </Box>}
+            </FormContainer>}
         </Box>
+
         <Box className='col-span-2'>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
             <Typography variant="h6" sx={{ color: '#6b7280', fontWeight: 500, marginLeft: 2 }}>
@@ -251,13 +280,17 @@ function App() {
               Go Live
             </Button>
           </Box>
+
           <Smartphone>
-            <InstaPost
+            {step === 1 && <InstaPost
               imageUrl={selectedImage || imageUrls[0]}
               username="botspacehq"
               description={`WhatsApp now connects 3 billion users, a milestone reflecting its influence in messaging. Thanks to Meta's strides in AI and business tools, WhatsApp not only enhances personal communication but also empowers businesses with robust AI features.`}
-            />
+            />}
+            {step === 2 && <PostWithComments imageUrl={selectedImage || imageUrls[0]} commentInput={commentInput} />}
+            {step === 3 && <DMInterface openingDM={openingDM} linkText={linkDM} responseDM={responseDM} />}
           </Smartphone>
+
           <StyledToggleButtonGroup
             value={value}
             exclusive
@@ -267,49 +300,6 @@ function App() {
             <StyledToggleButton value="comments">Comments</StyledToggleButton>
             <StyledToggleButton value="dm">DM</StyledToggleButton>
           </StyledToggleButtonGroup>
-          {/* <Box sx={{ mb: 4 }}>
-            <Tabs
-              value={activeTab}
-              onChange={handleTabChange}
-              sx={{
-                minHeight: 'auto',
-                '& .MuiTabs-indicator': {
-                  display: 'none',
-                },
-                '& .MuiTabs-flexContainer': {
-                  gap: 1,
-                },
-                '& .MuiTab-root': {
-                  textTransform: 'none',
-                  fontSize: '0.9rem',
-                  fontWeight: 500,
-                  color: '#6b7280',
-                  minHeight: 'auto',
-                  py: 1,
-                  px: 3,
-                  borderRadius: '20px',
-                  backgroundColor: '#f3f4f6',
-                  border: 'none',
-                  transition: 'all 0.2s ease',
-                  '&.Mui-selected': {
-                    color: 'white',
-                    fontWeight: 600,
-                    backgroundColor: '#3b82f6',
-                  },
-                  '&:hover': {
-                    backgroundColor: '#e5e7eb',
-                  },
-                  '&.Mui-selected:hover': {
-                    backgroundColor: '#2563eb',
-                  }
-                }
-              }}
-            >
-              <Tab label="Post" />
-              <Tab label="Comments" />
-              <Tab label="DM" />
-            </Tabs>
-          </Box> */}
         </Box>
       </Box>
     </Box>
